@@ -1,0 +1,13 @@
+name: digital-human
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      - fastapi>=0.111.0
+      - uvicorn[standard]>=0.30.0
+      - requests>=2.32.0
+      - python-dotenv>=1.0.1
+      - python-multipart>=0.0.9
+      - imageio-ffmpeg>=0.5.1

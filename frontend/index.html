@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Boson 数字人视频 MVP</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="panel">
+        <header>
+          <h1>Boson 数字人视频 MVP</h1>
+          <p>上传人脸图片、示例语音和朗读文本，生成单图数字人视频。</p>
+        </header>
+
+        <form id="generate-form">
+          <label>
+            人脸图片
+            <input name="face_image" type="file" accept="image/png,image/jpeg,image/webp" required />
+          </label>
+
+          <label>
+            示例语音
+            <input name="reference_audio" type="file" accept="audio/*" required />
+          </label>
+
+          <label>
+            示例语音文本
+            <textarea name="reference_text" rows="3" placeholder="建议填写示例语音中的原文"></textarea>
+          </label>
+
+          <label>
+            朗读文本
+            <textarea name="text" rows="5" required placeholder="输入希望数字人朗读的内容"></textarea>
+          </label>
+
+          <label>
+            视频尺寸
+            <select name="size">
+              <option value="480x640" selected>480x640</option>
+              <option value="640x640">640x640</option>
+              <option value="640x480">640x480</option>
+            </select>
+          </label>
+
+          <button id="submit-button" type="submit">生成视频</button>
+        </form>
+      </section>
+
+      <section class="panel result">
+        <h2>任务状态</h2>
+        <p id="status">等待提交。</p>
+        <video id="preview" controls hidden></video>
+        <a id="download" hidden>下载视频</a>
+      </section>
+    </main>
+    <script src="/static/app.js"></script>
+  </body>
+</html>
