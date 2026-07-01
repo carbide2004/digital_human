@@ -4,6 +4,8 @@
 
 默认流程是：先调用 TTS 生成 MP3，再用 MP3 驱动 Avatar 生成带声音的 MP4。这样比直接使用 Avatar 的 `input_tts` 路径更容易定位 TTS、音频格式和视频生成问题。
 
+请在北京时间的白天运行该项目，晚上由于调用 API 的请求过多常返回 `504 Gateway Time-out` 报错。
+
 ## 快速开始
 
 ### 1. 获取 Boson API Key
