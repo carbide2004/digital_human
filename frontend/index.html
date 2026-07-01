@@ -11,7 +11,7 @@
       <section class="panel">
         <header>
           <h1>Boson 数字人视频 MVP</h1>
-          <p>上传人脸图片、示例语音和朗读文本，生成单图数字人视频。</p>
+          <p>上传人脸图片，录制或上传参考声音，生成单图数字人视频。</p>
         </header>
 
         <form id="generate-form">
@@ -20,14 +20,78 @@
             <input name="face_image" type="file" accept="image/png,image/jpeg,image/webp" required />
           </label>
 
-          <label>
-            示例语音
-            <input name="reference_audio" type="file" accept="audio/*" required />
+          <fieldset>
+            <legend>参考声音来源</legend>
+            <div class="segmented" role="radiogroup" aria-label="参考声音来源">
+              <label>
+                <input type="radio" name="audio_source" value="record" checked />
+                <span>录音</span>
+              </label>
+              <label>
+                <input type="radio" name="audio_source" value="upload" />
+                <span>上传音频</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset id="speech-mode-section">
+            <legend>说话模式</legend>
+            <div class="segmented" role="radiogroup" aria-label="说话模式">
+              <label>
+                <input type="radio" name="speech_mode" value="sample" checked />
+                <span>朗读示例文本</span>
+              </label>
+              <label>
+                <input type="radio" name="speech_mode" value="free" />
+                <span>自由说话</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <section id="sample-section" class="sample-box" aria-live="polite">
+            <h2>示例文本</h2>
+            <p id="sample-text">
+              你好，我正在录制一段声音样本，用来生成数字人视频。今天天气不错，我们准备测试语音克隆的效果。请注意我的语速、停顿、音调和情绪变化。一二三四五，春夏秋冬，东西南北，人工智能正在改变内容创作的方式。
+            </p>
+          </section>
+
+          <section id="free-section" class="sample-box" hidden>
+            <h2>自由说话</h2>
+            <p>请自然说几句话，尽量保持正常语速和清晰发音。</p>
+          </section>
+
+          <section id="record-section" class="audio-section">
+            <div class="toolbar">
+              <button id="record-button" type="button">开始录音</button>
+              <button id="stop-button" type="button" disabled>停止录音</button>
+              <button id="reset-recording-button" type="button" disabled>重录</button>
+            </div>
+            <p id="recording-status">尚未录音。</p>
+            <audio id="recording-preview" controls hidden></audio>
+          </section>
+
+          <label id="upload-section" hidden>
+            上传参考音频
+            <input id="reference-audio-file" type="file" accept="audio/*" />
           </label>
 
-          <label>
-            示例语音文本
-            <textarea name="reference_text" rows="3" placeholder="建议填写示例语音中的原文"></textarea>
+          <fieldset id="upload-reference-text-section" hidden>
+            <legend>与参考音频对应的文本内容</legend>
+            <div class="segmented" role="radiogroup" aria-label="参考文本">
+              <label>
+                <input type="radio" name="reference_text_mode" value="none" checked />
+                <span>无文本</span>
+              </label>
+              <label>
+                <input type="radio" name="reference_text_mode" value="text" />
+                <span>有文本</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <label id="upload-reference-text-field" hidden>
+            参考音频对应文本
+            <textarea id="upload-reference-text-input" rows="4" placeholder="输入上传音频中实际朗读或说出的内容"></textarea>
           </label>
 
           <label>

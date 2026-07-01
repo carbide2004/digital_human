@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-from .audio_utils import prepare_reference_audio
+from .audio_utils import get_audio_duration_seconds, prepare_reference_audio
 from .boson_client import BosonClient, extract_status, extract_video_id
 
 
@@ -32,7 +32,12 @@ def generate_avatar_video(
     timeout_seconds: int = 900,
 ) -> GenerateVideoResult:
     active_client = client or BosonClient()
-    reference_audio = prepare_reference_audio(request.reference_audio, output_path.parent / "converted_audio")
+    reference_audio = prepare_reference_audio(
+        request.reference_audio,
+        output_path.parent / "converted_audio" / output_path.stem,
+    )
+    if request.reference_text.strip() and get_audio_duration_seconds(reference_audio) < 15:
+        raise ValueError("朗读示例文本模式下，参考录音太短。请完整朗读示例文本，建议录制 20-40 秒。")
 
     speech_path = output_path.parent / "generated_audio" / f"{output_path.stem}.mp3"
     active_client.create_speech(

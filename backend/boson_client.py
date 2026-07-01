@@ -117,7 +117,7 @@ class BosonClient:
             f"{self.base_url}/audio/speech",
             headers=self.headers,
             json=payload,
-            timeout=120,
+            timeout=180,
         )
         if response.status_code >= 400:
             raise BosonApiError(f"TTS 生成失败：HTTP {response.status_code} {response.text[:1000]}")
