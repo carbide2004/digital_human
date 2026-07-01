@@ -20,18 +20,29 @@
 - Boson 文档：https://docs.boson.ai/overview
 - Boson Workspace：https://www.boson.ai/workspace
 
-### 2. 创建环境
+### 2. 下载项目代码
+
+先把本仓库克隆到本地，然后进入项目目录：
+
+```bash
+git clone https://github.com/carbide2004/digital_human.git
+cd digital_human
+```
+
+如果你是在 GitHub 页面直接下载 ZIP，也可以解压后进入解压出来的项目目录。
+
+### 3. 创建环境
 
 默认使用 conda：
 
-```powershell
+```bash
 conda env create -f environment.yml
 conda activate digital-human
 ```
 
 如果下载很慢，可以改用清华 PyPI 源安装 Python 依赖：
 
-```powershell
+```bash
 conda create -n digital-human python=3.12 pip -y
 conda activate digital-human
 python -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
@@ -39,7 +50,7 @@ python -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirement
 
 如果 conda 包下载本身很慢，先配置 conda 镜像源，再重新执行上面的命令。
 
-### 3. 配置 `.env`
+### 4. 配置 `.env`
 
 复制 `.env.example` 为 `.env`，或直接新建 `.env`，然后填入：
 
@@ -48,9 +59,9 @@ BOSON_API_KEY=你的 Boson API Key
 BOSON_BASE_URL=https://api.boson.ai/v1
 ```
 
-### 4. 启动网页
+### 5. 启动网页
 
-```powershell
+```bash
 uvicorn backend.app:app --reload --host 127.0.0.1 --port 8000
 ```
 
