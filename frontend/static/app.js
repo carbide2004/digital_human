@@ -18,6 +18,74 @@ const stopButton = document.querySelector("#stop-button");
 const resetRecordingButton = document.querySelector("#reset-recording-button");
 const recordingStatus = document.querySelector("#recording-status");
 const recordingPreview = document.querySelector("#recording-preview");
+const speechTextInput = document.querySelector("#speech-text");
+const tagGroupsContainer = document.querySelector("#tag-groups");
+
+const TAG_GROUPS = [
+  {
+    title: "情绪",
+    tags: [
+      ["愉悦", "emotion:elation"],
+      ["逗乐", "emotion:amusement"],
+      ["热情", "emotion:enthusiasm"],
+      ["坚定", "emotion:determination"],
+      ["满足", "emotion:contentment"],
+      ["亲切", "emotion:affection"],
+      ["惊讶", "emotion:surprise"],
+      ["愤怒", "emotion:anger"],
+      ["恐惧", "emotion:fear"],
+      ["悲伤", "emotion:sadness"],
+      ["厌恶", "emotion:disgust"],
+      ["如释重负", "emotion:relief"],
+      ["自豪", "emotion:pride"],
+      ["困惑", "emotion:confusion"],
+      ["沉思", "emotion:contemplation"],
+      ["敬畏", "emotion:awe"],
+      ["激动", "emotion:arousal"],
+      ["苦涩", "emotion:bitterness"],
+      ["无助", "emotion:helplessness"],
+      ["渴望", "emotion:longing"],
+      ["羞愧", "emotion:shame"],
+    ],
+  },
+  {
+    title: "韵律",
+    tags: [
+      ["极慢", "prosody:speed_very_slow"],
+      ["慢速", "prosody:speed_slow"],
+      ["快速", "prosody:speed_fast"],
+      ["极快", "prosody:speed_very_fast"],
+      ["低音调", "prosody:pitch_low"],
+      ["高音调", "prosody:pitch_high"],
+      ["停顿", "prosody:pause"],
+      ["长停顿", "prosody:long_pause"],
+      ["高表现力", "prosody:expressive_high"],
+      ["低表现力", "prosody:expressive_low"],
+    ],
+  },
+  {
+    title: "风格",
+    tags: [
+      ["歌唱", "style:singing"],
+      ["喊话", "style:shouting"],
+      ["低声", "style:whispering"],
+    ],
+  },
+  {
+    title: "音效",
+    tags: [
+      ["笑声", "sfx:laughter"],
+      ["叹气", "sfx:sigh"],
+      ["咳嗽", "sfx:cough"],
+      ["喷嚏", "sfx:sneeze"],
+      ["吸鼻", "sfx:sniff"],
+      ["哭泣", "sfx:crying"],
+      ["尖叫", "sfx:screaming"],
+      ["哼唱", "sfx:humming"],
+      ["打嗝", "sfx:burping"],
+    ],
+  },
+];
 
 let timer = null;
 let mediaRecorder = null;
@@ -227,6 +295,53 @@ function updateReferenceTextMode() {
     getCheckedValue("audio_source") !== "upload" || getCheckedValue("reference_text_mode") !== "text";
 }
 
+function renderTagPanel() {
+  if (!tagGroupsContainer) {
+    return;
+  }
+  tagGroupsContainer.replaceChildren();
+
+  TAG_GROUPS.forEach((group) => {
+    const section = document.createElement("details");
+    section.className = "tag-group";
+    section.open = true;
+
+    const heading = document.createElement("summary");
+    heading.textContent = group.title;
+    section.appendChild(heading);
+
+    const list = document.createElement("div");
+    list.className = "tag-list";
+
+    group.tags.forEach(([label, tagName]) => {
+      const tag = `<|${tagName}|>`;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "tag-button";
+      button.textContent = label;
+      button.title = tag;
+      button.setAttribute("aria-label", `插入 ${label} ${tag}`);
+      button.addEventListener("click", () => insertSpeechTag(tag));
+      list.appendChild(button);
+    });
+
+    section.appendChild(list);
+    tagGroupsContainer.appendChild(section);
+  });
+}
+
+function insertSpeechTag(tag) {
+  speechTextInput.focus();
+  const start = speechTextInput.selectionStart ?? speechTextInput.value.length;
+  const end = speechTextInput.selectionEnd ?? speechTextInput.value.length;
+  const before = speechTextInput.value.slice(0, start);
+  const after = speechTextInput.value.slice(end);
+  const nextCursor = start + tag.length;
+
+  speechTextInput.value = `${before}${tag}${after}`;
+  speechTextInput.setSelectionRange(nextCursor, nextCursor);
+}
+
 function getCheckedValue(name) {
   return form.querySelector(`input[name="${name}"]:checked`).value;
 }
@@ -246,3 +361,4 @@ function revokeRecordingUrl() {
 updateAudioSource();
 updateSpeechMode();
 updateReferenceTextMode();
+renderTagPanel();

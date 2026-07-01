@@ -96,7 +96,7 @@
 
           <label>
             朗读文本
-            <textarea name="text" rows="5" required placeholder="输入希望数字人朗读的内容"></textarea>
+            <textarea id="speech-text" name="text" rows="5" required placeholder="输入希望数字人朗读的内容"></textarea>
           </label>
 
           <label>
@@ -112,12 +112,20 @@
         </form>
       </section>
 
-      <section class="panel result">
-        <h2>任务状态</h2>
-        <p id="status">等待提交。</p>
-        <video id="preview" controls hidden></video>
-        <a id="download" hidden>下载视频</a>
-      </section>
+      <aside class="side-column">
+        <section class="panel result">
+          <h2>任务状态</h2>
+          <p id="status">等待提交。</p>
+          <video id="preview" controls hidden></video>
+          <a id="download" hidden>下载视频</a>
+        </section>
+
+        <section class="panel tag-panel">
+          <h2>朗读文本 Tags</h2>
+          <p>点击下方标签，会立即插入到“朗读文本”输入框当前光标位置。</p>
+          <div id="tag-groups" class="tag-groups"></div>
+        </section>
+      </aside>
     </main>
     <script src="/static/app.js"></script>
   </body>
